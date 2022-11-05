@@ -1,7 +1,40 @@
 import React from 'react';
 import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
+import {
+  MDBModal,
+  MDBModalDialog,
+  MDBModalContent,
+  MDBModalHeader,
+  MDBModalTitle,
+  MDBModalBody,
+  MDBModalFooter,
+} from 'mdb-react-ui-kit';
+import { useState, useEffect } from 'react';
+import Spinner from 'react-bootstrap/Spinner';
 
 const BasicTable = () => {
+  const [tasks, setTasks] = useState([])
+  const [centredModal, setCentredModal] = useState(false);
+  const [isDailyLoading, setIsDailyLoading] = useState(false);
+
+  const toggleShow = () => setCentredModal(!centredModal);
+
+  const getDailyTask = () => {
+    setIsDailyLoading(true)
+    fetch("http://127.0.0.1:8000/api/v1/test")
+      .then(response => response.json())
+      .then(data => {
+        console.log(data['GPT-3'][0]['text'])
+        setTasks(data['GPT-3'][0]['text'])
+        setIsDailyLoading(false)
+      })
+  }
+
+  const handleTaskView = () => {
+
+  }
+
+
   return (
     <div style={{ paddingRight: '2em', paddingLeft: '2em' }}>
       <MDBTable align='middle' color="light">
@@ -54,11 +87,9 @@ const BasicTable = () => {
               </MDBBtn>
             </td>
             <td>
-              <div>
-                <p className='text-muted mb-0'> <MDBBadge pill color='info'>Done</MDBBadge> 1. <b>Space travel with friends </b></p>
-                <p className='text-muted mb-0'>2. <b>Take trash</b></p>
-                <p className='text-muted mb-0'><MDBBadge pill color='info'>Done</MDBBadge> 3. <b>Give a ride to hitchhiker</b></p>
-              </div>
+              <MDBBtn color='grey' rounded onClick={() => handleTaskView()}>
+                View daily tasks
+              </MDBBtn>
             </td>
           </tr>
           <tr>
@@ -100,11 +131,9 @@ const BasicTable = () => {
               </MDBBtn>
             </td>
             <td>
-              <div>
-                <p className='text-muted mb-0'>1. <b>Space travel with friends </b></p>
-                <p className='text-muted mb-0'>2. <b>Take trash</b></p>
-                <p className='text-muted mb-0'>3. <b>Give a ride to hitchhiker</b></p>
-              </div>
+              <MDBBtn color='grey' rounded onClick={() => handleTaskView()}>
+                <MDBBadge pill color='warning'>In progress</MDBBadge> View daily tasks
+              </MDBBtn>
             </td>
           </tr>
           <tr>
@@ -141,16 +170,45 @@ const BasicTable = () => {
               </MDBBtn>
             </td>
             <td>
-              <MDBBtn color='dark' rounded>
-                Create daily task
-              </MDBBtn>
+              {isDailyLoading ?
+                <MDBBtn color='dark' rounded>
+                  Creating... <Spinner animation="border" size='sm'/>
+                </MDBBtn>
+                :
+                <MDBBtn color='dark' rounded onClick={() => getDailyTask()}>
+                  Create daily task
+                </MDBBtn>
+              }
+
             </td>
             <td>
-              <div>
-                <p className='text-muted mb-0'><MDBBadge pill color='info'>Done</MDBBadge> 1. <b>Space travel with friends </b></p>
-                <p className='text-muted mb-0'>2. <b>Take trash</b></p>
-                <p className='text-muted mb-0'>3. <b>Give a ride to hitchhiker</b></p>
-              </div>
+              <MDBBtn color='grey' rounded onClick={toggleShow}>
+                <MDBBadge pill color='info'>Done</MDBBadge> View daily tasks
+
+              </MDBBtn>
+
+              <MDBModal tabIndex='-1' show={centredModal} setShow={setCentredModal}>
+                <MDBModalDialog centered>
+                  <MDBModalContent>
+                    <MDBModalHeader>
+                      <MDBModalTitle>Daily tasks by GPT-3</MDBModalTitle>
+                      <MDBBtn className='btn-close' color='none' onClick={toggleShow}></MDBBtn>
+                    </MDBModalHeader>
+                    <MDBModalBody>
+                      <p>
+                        {tasks}
+                      </p>
+                    </MDBModalBody>
+                    <MDBModalFooter>
+                      <MDBBtn color='secondary' onClick={toggleShow}>
+                        Close
+                      </MDBBtn>
+                      <MDBBtn>Mark as Done</MDBBtn>
+                    </MDBModalFooter>
+                  </MDBModalContent>
+                </MDBModalDialog>
+              </MDBModal>
+
             </td>
           </tr>
         </MDBTableBody>
