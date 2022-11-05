@@ -10,6 +10,7 @@ import Deploy from "./components/Deploy"
 import InitTokens from "./components/InitTokens"
 import Landing from "./components/Landing"
 import Panel from "./components/Panel"
+import { useNavigate } from "react-router-dom";
 
 const App = () => {
   const [progress, setProgess] = useState(0)
@@ -20,6 +21,7 @@ const App = () => {
 
   const { ethereum } = window;
   const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const { ethereum } = window;
@@ -56,6 +58,9 @@ const App = () => {
       setAccountAddress(accounts[0]);
       setAccountBalance(bal);
       setIsConnected(true);
+      setInterval(() => {      
+      navigate("/init-tokens", { replace: true });
+    }, 1000)
     } catch (error) {
       setIsConnected(false);
     }
