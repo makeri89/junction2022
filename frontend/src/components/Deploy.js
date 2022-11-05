@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 
-import { CardActionArea } from '@mui/material';
+import { CardActionArea, Grid } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -55,7 +55,7 @@ const Deploy = () => {
   };
 
   return (
-    <div className='App'>
+    <div className='App' style={{ paddingTop: '3em' }}>
       <h1>Initializing Galaxy's Basic Income</h1>
       <br />
       <br />
@@ -127,6 +127,18 @@ const Deploy = () => {
               </div>
             )}
           </Step>
+          <Step transition='scale'>
+            {({ accomplished }) => (
+              <div
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 25,
+                  background: '#8D72E1',
+                }}
+              ></div>
+            )}
+          </Step>
         </ProgressBar>
         <br />
         <br />
@@ -143,56 +155,82 @@ const Deploy = () => {
 
         {isDeployed && (
           <Delay waitBeforeShown={500}>
-            <div>
-              <Delay waitBeforeShown={1000}>
-                <h3>All set! We are ready to go!</h3>
-              </Delay>
+            <div style={{ paddingTop: '3em' }}>
+              <Grid container spacing={4} justify='center' direction='column'>
+                <Grid item>
+                  <Delay waitBeforeShown={1000}>
+                    <h3>All set! We are ready to go!</h3>
+                  </Delay>
+                </Grid>
 
-              <Delay waitBeforeShown={1500}>
-                <h4>
-                  As AI Work-ethics has ruled on the year 2200,
-                  <br />
-                  we need to provide two AI for the project
-                </h4>
-              </Delay>
+                <Grid item>
+                  <Delay waitBeforeShown={3500}>
+                    <h4>
+                      As the AI work ethics law, which limits the amount of work
+                      given to a single AI, <br />
+                      was ruled in 2200, we need to provide two AI's for the
+                      project:
+                    </h4>
+                  </Delay>
+                </Grid>
 
-              <div class='container' style={{ display: 'flex' }}>
-                <Delay waitBeforeShown={2000}>
-                  <Card sx={{ maxWidth: 245 }} style={{ marginRight: '2em' }}>
-                    <CardActionArea>
-                      <CardMedia component='img' image='/gpt2.png' />
-                      <CardContent>
-                        <Typography gutterBottom variant='h5' component='div'>
-                          GPT-2
-                        </Typography>
-                        <Typography variant='body2' color='text.secondary'>
-                          Product Owner
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
+                <Delay waitBeforeShown={11000}>
+                  <Grid
+                    container
+                    item
+                    direction='row'
+                    justifyContent='center'
+                    alignItems='center'
+                  >
+                    <Grid item>
+                      <Card
+                        sx={{ maxWidth: 245 }}
+                        style={{ marginRight: '2em' }}
+                      >
+                        <CardActionArea>
+                          <CardMedia component='img' image='/gpt2.png' />
+                          <CardContent>
+                            <Typography
+                              gutterBottom
+                              variant='h5'
+                              component='div'
+                            >
+                              GPT-2
+                            </Typography>
+                            <Typography variant='body2' color='text.secondary'>
+                              Product Owner
+                            </Typography>
+                          </CardContent>
+                        </CardActionArea>
+                      </Card>
+                    </Grid>
+
+                    <Grid item>
+                      <Card sx={{ maxWidth: 245 }}>
+                        <CardActionArea>
+                          <CardMedia
+                            component='img'
+                            image='/gpt3.png'
+                            alt='green iguana'
+                          />
+                          <CardContent>
+                            <Typography
+                              gutterBottom
+                              variant='h5'
+                              component='div'
+                            >
+                              GPT-3
+                            </Typography>
+                            <Typography variant='body2' color='text.secondary'>
+                              Scrum Master
+                            </Typography>
+                          </CardContent>
+                        </CardActionArea>
+                      </Card>
+                    </Grid>
+                  </Grid>
                 </Delay>
-
-                <Delay waitBeforeShown={2500}>
-                  <Card sx={{ maxWidth: 245 }}>
-                    <CardActionArea>
-                      <CardMedia
-                        component='img'
-                        image='/gpt3.png'
-                        alt='green iguana'
-                      />
-                      <CardContent>
-                        <Typography gutterBottom variant='h5' component='div'>
-                          GPT-3
-                        </Typography>
-                        <Typography variant='body2' color='text.secondary'>
-                          Scrum Master
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                </Delay>
-              </div>
+              </Grid>
             </div>
           </Delay>
         )}
