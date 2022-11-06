@@ -33,7 +33,7 @@ netaddr==0.8.0
 numpy==1.21.6
 openai==0.25.0
 openpyxl==3.0.10
-pandas==1.2.0
+pandas==1.2.5
 pandas-stubs==1.2.0.62
 parsimonious==0.8.1
 protobuf==3.19.5
