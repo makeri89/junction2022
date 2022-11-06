@@ -33,6 +33,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
+
 @app.get("/api/v1/wallet-balance/{wallet_address}")
 async def get_wallet_balance(wallet_address: str):
     balance = web3.eth.getBalance(wallet_address)
