@@ -1,4 +1,3 @@
-// contracts/foodToken.sol
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
@@ -7,7 +6,7 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
- * @title Galaxy Income
+ * @title Universal Income 3000
  */
 contract Token is ERC20("Food Token", "FODI"), Ownable {
     using SafeMath for uint256;
@@ -16,8 +15,8 @@ contract Token is ERC20("Food Token", "FODI"), Ownable {
     string public TOKEN_NAME;
     string public SYMBOL;
 
-    uint256 private COMMUNITY_FEE_RATE = 5;
-    uint256 private PENSION_FEE_RATE = 5;
+    uint256 private COMMUNITY_FEE_RATE;
+    uint256 private PENSION_FEE_RATE;
 
 	address payable COMMUNITY_WALLET_ADDRESS;
 	address payable PENSION_WALLET_ADDRESS;
@@ -26,6 +25,8 @@ contract Token is ERC20("Food Token", "FODI"), Ownable {
     constructor (
         string memory _tokenName,
         string memory _symbol,
+        uint256 _communityFee,
+        uint256 _pensionFee,
         uint256 _totalSupply,
         address payable _communityWalletAddress,
         address payable _pensionWalletAddress) {
@@ -42,67 +43,51 @@ contract Token is ERC20("Food Token", "FODI"), Ownable {
             isExcludedFromFee[address(this)] = true;
     }
     
-    function transfer(address _toAddress, uint256 _amountToTransfer) 
-override public returns (bool) {
-        require(_amountToTransfer > 0, "Transfer amount must be greater 
-than zero");
+    function transfer(address _toAddress, uint256 _amountToTransfer) override public returns (bool) {
+        require(_amountToTransfer > 0, "Transfer amount must be greater than zero");
 
         // if sender is excluded from fee -> apply no fees on transaction
         if (isExcludedFromFee[_toAddress]) {
             return super.transfer(_toAddress, _amountToTransfer);
         }
-        uint256 communityAmount = 
-_calculateCommunityAndPay(_amountToTransfer);
-        uint256 pensionAmount = 
-_calculatePensionAndPay(_amountToTransfer);
+        uint256 communityAmount = _calculateCommunityAndPay(_amountToTransfer);
+        uint256 pensionAmount = _calculatePensionAndPay(_amountToTransfer);
         
         // an amount (according to pension fee) sent to pension wallet 
         super.transfer(PENSION_WALLET_ADDRESS, pensionAmount);
 
-        uint256 amountToTransferAfterFees = 
-_amountToTransfer.sub(communityAmount).sub(pensionAmount);
+        uint256 amountToTransferAfterFees = _amountToTransfer.sub(communityAmount).sub(pensionAmount);
         return super.transfer(_toAddress, amountToTransferAfterFees);
     }
 
-    function transferFrom(address _fromAddress, address _toAddress, 
-uint256 _amountToTransfer) override public returns (bool) {
-        require(_amountToTransfer > 0, "Transfer amount must be greater 
-than zero");
+    function transferFrom(address _fromAddress, address _toAddress, uint256 _amountToTransfer) override public returns (bool) {
+        require(_amountToTransfer > 0, "Transfer amount must be greater than zero");
 
-        // if sender or recepient is excluded from fee -> apply no fees on 
-transaction
-        if (isExcludedFromFee[_fromAddress] || 
-isExcludedFromFee[_toAddress]) {
+        // if sender or recepient is excluded from fee -> apply no fees on transaction
+        if (isExcludedFromFee[_fromAddress] || isExcludedFromFee[_toAddress]) {
             return super.transfer(_toAddress, _amountToTransfer);
         }
 
-        uint256 communityAmount = 
-_calculateCommunityAndPay(_amountToTransfer);
-        uint256 pensionAmount = 
-_calculatePensionAndPay(_amountToTransfer);
+        uint256 communityAmount = _calculateCommunityAndPay(_amountToTransfer);
+        uint256 pensionAmount = _calculatePensionAndPay(_amountToTransfer);
         
         // an amount (according to pension fee) sent to pension wallet 
         super.transfer(PENSION_WALLET_ADDRESS, pensionAmount);
 
-        uint256 amountToTransferAfterFees = 
-_amountToTransfer.sub(communityAmount).sub(pensionAmount);
+        uint256 amountToTransferAfterFees = _amountToTransfer.sub(communityAmount).sub(pensionAmount);
         return super.transfer(_toAddress, amountToTransferAfterFees);
     }
     
-    function _calculateCommunityAndPay(uint256 amount) internal returns 
-(uint256) {
-        uint256 amountForCommunity = 
-amount.mul(COMMUNITY_FEE_RATE).div(100);
+    function _calculateCommunityAndPay(uint256 amount) internal returns (uint256) {
+        uint256 amountForCommunity = amount.mul(COMMUNITY_FEE_RATE).div(100);
         if (amountForCommunity > 0) {
-            // an amount (according to community fee) sent to community 
-wallet 
+            // an amount (according to community fee) sent to community wallet 
             super.transfer(COMMUNITY_WALLET_ADDRESS, amountForCommunity);
         }
         return amountForCommunity;
     }
     
-    function _calculatePensionAndPay(uint256 amount) internal returns 
-(uint256) {
+    function _calculatePensionAndPay(uint256 amount) internal returns (uint256) {
         uint256 amountForPension = amount.mul(PENSION_FEE_RATE).div(100);
         if (amountForPension > 0) {
             // an amount (according to pension fee) sent to pension wallet 
@@ -111,13 +96,11 @@ wallet
         return amountForPension;
     }
 
-    function excludeFromFee(address accountToTakeFeesOff) public onlyOwner 
-{
+    function excludeFromFee(address accountToTakeFeesOff) public onlyOwner {
         isExcludedFromFee[accountToTakeFeesOff] = true;
     }
 
-    function isAccountExcludedFromFee(address account) public view 
-returns(bool) {
+    function isAccountExcludedFromFee(address account) public view returns(bool) {
         return isExcludedFromFee[account];
     }
     

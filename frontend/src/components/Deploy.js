@@ -8,6 +8,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { ProgressBar, Step } from 'react-step-progress-bar';
 import styled from 'styled-components';
+import { useNavigate } from "react-router-dom";
 
 const Button = styled.button`
   background-color: #8d72e1;
@@ -23,6 +24,11 @@ const Deploy = () => {
   const [isDeploying, setIsDeploying] = useState(false);
   const [isDeployed, setIsDeployed] = useState(false);
   const [progress, setProgress] = useState(0);
+  const navigate = useNavigate();
+
+  const handlePanelChange = () => {
+    navigate("/panel", { replace: true });
+  }
 
   useEffect(() => {
     if (isDeploying) {
@@ -231,6 +237,9 @@ const Deploy = () => {
                   </Grid>
                 </Delay>
               </Grid>
+              <Delay waitBeforeShown={12000}>
+                  <Button onClick={() => handlePanelChange()}>Move to admin panel</Button>
+              </Delay>
             </div>
           </Delay>
         )}

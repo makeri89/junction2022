@@ -4,6 +4,8 @@ from web3 import Web3
 from fastapi.middleware.cors import CORSMiddleware
 from os import getenv
 import openai
+import json
+from walletStorageAbi import walletStorageAbi
 
 from os.path import join, dirname
 from dotenv import load_dotenv
@@ -13,8 +15,8 @@ load_dotenv(dotenv_path)
 
 app = FastAPI()
 
-BSC_TESTNET_RPC_URL = "https://data-seed-prebsc-1-s1.binance.org:8545"
-web3 = Web3(Web3.HTTPProvider(BSC_TESTNET_RPC_URL))
+POLYGON_TESTNET_RPC_URL = "https://rpc-mumbai.maticvigil.com/"
+web3 = Web3(Web3.HTTPProvider(POLYGON_TESTNET_RPC_URL))
 
 openai.api_key = getenv('OPENAI_API_KEY')
 
@@ -32,20 +34,31 @@ app.add_middleware(
 )
 
 @app.get("/api/v1/wallet-balance/{wallet_address}")
-async def root(wallet_address: str):
-    amount = web3.eth.getBalance(wallet_address)
+async def get_wallet_balance(wallet_address: str):
+    balance = web3.eth.getBalance(wallet_address)
     if web3.isConnected():
-        return {f"balance": web3.fromWei(amount,"ether")}
+        return {f"balance": web3.fromWei(balance,"ether")}
     else:
-        return {"pekele"}
+        return {"jee"}
+
+
+@app.get("/api/v1/gpt-wallets")
+async def get_all_wallets():
+    wallet_storage_contract_address = "0xC5cD955CBEA279684dA4B55346637E760516c48c"
+    contract = web3.eth.contract(address = wallet_storage_contract_address, abi = walletStorageAbi)
+    address_list = contract.functions.getWallets().call()
+    
+    if web3.isConnected():
+        return {f"wallets": address_list}
+    else:
+        return {"jee"}
 
 
 previous_tasks = ["Collecting data from different planets for research", "Helping to build new space stations", "Acting as a tour guide for space tourists"]
 kk = ", ".join(previous_tasks)
 
-@app.get("/api/v1/test")
+@app.get("/api/v1/gpt")
 async def gpt():
-
     response = openai.Completion.create(
         model="text-davinci-002",
         prompt=f"It's year 2222. Humans has moved to space and goverment is not existing anymore. Humans don't have jobs anymore since artifical intelligent has taken their jobs.\nWe need help to organize daily tasks for them to get salary out of the task.\n\nQ:Could you provide three tasks for humans to do in space for salary? The tasks should not be same as {kk}\n",
@@ -57,3 +70,5 @@ async def gpt():
     )
     
     return {"GPT-3": response.choices}
+
+

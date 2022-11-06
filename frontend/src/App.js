@@ -58,9 +58,7 @@ const App = () => {
       setAccountAddress(accounts[0]);
       setAccountBalance(bal);
       setIsConnected(true);
-      setInterval(() => {      
       navigate("/init-tokens", { replace: true });
-    }, 1000)
     } catch (error) {
       setIsConnected(false);
     }

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract WalletStorage {
+contract WalletStorage is Ownable {
     string[] wallets;
     
-    function addWallet(string memory wallet) public {
+    function addWallet(string memory wallet) public only Owner {
         wallets.push(wallet);
     }
 

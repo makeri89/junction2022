@@ -1,6 +1,6 @@
 import BasicTable from "./Table"
 import styled from 'styled-components';
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
 import {
   MDBBtn,
   MDBModal,
@@ -25,7 +25,6 @@ const Button = styled.button`
 `;
 
 const Panel = () => {
-  const [varyingState, setVaryingState] = useState('');
   const [varyingModal, setVaryingModal] = useState(false);
   const [varyingRecipient, setVaryingRecipient] = useState('');
   const [varyingMessage, setVaryingMessage] = useState('');
