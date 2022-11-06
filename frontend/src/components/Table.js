@@ -44,7 +44,7 @@ const BasicTable = () => {
     } else {
       setIsThirdLoading(true)
     }
-    fetch("process.env.REACT_ENV_BACKEND_URL/api/v1/gpt")
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1/gpt`)
       .then(response => response.json())
       .then(data => {
         setTasks(data['GPT-3'][0]['text'])
