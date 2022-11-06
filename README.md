@@ -2,6 +2,34 @@
 
 ### Quick overview
 
+#### Landing page
+<img src="https://github.com/makeri89/junction2022/blob/main/photos/landing.png">
+
+
+#### Token overview (DALLE 2 created token logos)
+<img src="https://github.com/makeri89/junction2022/blob/main/photos/token.png">
+
+
+
+#### Deploy
+<img src="https://github.com/makeri89/junction2022/blob/main/photos/deployPipeline.png">
+
+
+#### Deploy done
+<img src="https://github.com/makeri89/junction2022/blob/main/photos/deploy2.png">
+
+
+#### Panel
+<img src="https://github.com/makeri89/junction2022/blob/main/photos/panel2.png">
+
+
+#### Signing human
+<img src="https://github.com/makeri89/junction2022/blob/main/photos/panel.png">
+
+
+#### GPT-3 created daily task
+<img src="https://github.com/makeri89/junction2022/blob/main/photos/panel3.png">
+
 
 ### Wallets created
 
