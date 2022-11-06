@@ -27,7 +27,7 @@ const BasicTable = () => {
 
   useEffect(() => {
     setIsFetchingWallets(true)
-    fetch("http://127.0.0.1:8000/api/v1/gpt-wallets")
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1/gpt-wallets`)
     .then(response => response.json())
     .then(data => {
       setWallets(data['wallets'])
@@ -44,7 +44,7 @@ const BasicTable = () => {
     } else {
       setIsThirdLoading(true)
     }
-    fetch("http://127.0.0.1:8000/api/v1/gpt")
+    fetch("process.env.REACT_ENV_BACKEND_URL/api/v1/gpt")
       .then(response => response.json())
       .then(data => {
         setTasks(data['GPT-3'][0]['text'])

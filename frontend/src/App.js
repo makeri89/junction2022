@@ -35,7 +35,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/v1/wallet-balance/0x978fDdabA8A86c6bf11d79e2A00cE08BB9507B4C")
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1/wallet-balance/0x978fDdabA8A86c6bf11d79e2A00cE08BB9507B4C`)
     .then(response => response.json())
     .then(data => {
       setAccountBalance(data.balance)
@@ -69,7 +69,7 @@ const App = () => {
          setProgess(progress => progress + 1)
       }, 100);
   }
-  
+
 
   return (
     <div className="App">
