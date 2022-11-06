@@ -27,7 +27,7 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins="*",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -47,7 +47,7 @@ async def get_all_wallets():
     wallet_storage_contract_address = "0xC5cD955CBEA279684dA4B55346637E760516c48c"
     contract = web3.eth.contract(address = wallet_storage_contract_address, abi = walletStorageAbi)
     address_list = contract.functions.getWallets().call()
-    
+
     if web3.isConnected():
         return {f"wallets": address_list}
     else:
@@ -68,7 +68,7 @@ async def gpt():
         frequency_penalty=0,
         presence_penalty=0
     )
-    
+
     return {"GPT-3": response.choices}
 
 
