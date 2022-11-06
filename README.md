@@ -1,6 +1,9 @@
 ## Universum Income 3000
 
+
 ### Quick overview
+
+Note: Demo app, there was no time to implemented all of the funtionalities. :)
 
 #### Landing page
 <img src="https://github.com/makeri89/junction2022/blob/main/photos/landing.png">
